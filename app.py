@@ -112,19 +112,21 @@ def index():
     result3 = str(figdata_png)[2:-1]
 
     ## Buatlah sebuah plot yang menampilkan insight di dalam data 
-    treemaps_analize = df2.groupby(['Content Rating','Genres']).agg({
+    treemaps_analize = df2.groupby('Genres').agg({
     'Reviews' : 'sum'
     }).sort_values(by='Reviews',ascending=False).head(10).reset_index()
 
+    plt.axis('off')
     sizes= treemaps_analize.Reviews
     label = treemaps_analize.Genres
-    squarify.plot(sizes=sizes, label=label, alpha = 0.7)
+    squarify.plot(sizes=sizes, label=label, alpha = 0.8)
     
     figfile = BytesIO()
     plt.savefig(figfile, format='png')
     figfile.seek(0)
     figdata_png = base64.b64encode(figfile.getvalue())
     result4 = str(figdata_png)[2:-1]
+    
     # Tambahkan hasil result plot pada fungsi render_template()
     return render_template('index.html', stats=stats, result=result, result2=result2, result3=result3,result4=result4)
 
